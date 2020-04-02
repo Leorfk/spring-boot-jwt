@@ -1,5 +1,6 @@
 package com.projetospring.apijava.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.projetospring.apijava.resource.CategoriaResource;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class Categoria implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    @JsonManagedReference//Define que poderá vir objetos de outra classe que estão associados a esta
     @ManyToMany(mappedBy = "categorias")
     private List<Produto> produtos = new ArrayList<>();
 

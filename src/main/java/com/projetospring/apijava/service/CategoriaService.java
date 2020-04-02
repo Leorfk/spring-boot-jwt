@@ -2,6 +2,7 @@ package com.projetospring.apijava.service;
 
 import com.projetospring.apijava.domain.Categoria;
 import com.projetospring.apijava.repository.CategoriaRepository;
+import com.projetospring.apijava.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ public class CategoriaService {
 
     public Categoria buscar(Integer id){
         Optional<Categoria> categoria =  categoriaRepository.findById(id);
-        return categoria.orElse(null);
+        return categoria.orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
     }
 }

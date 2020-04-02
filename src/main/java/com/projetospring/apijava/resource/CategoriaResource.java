@@ -21,6 +21,7 @@ public class CategoriaResource {
     @GetMapping
     public ResponseEntity<Categoria> findById(@RequestParam(value="id" ) Integer id){
         Categoria cat = categoriaService.buscar(id);
-        return cat != null ? ResponseEntity.ok(cat) : ResponseEntity.noContent().build();
+        //return cat != null ? ResponseEntity.ok(cat) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(cat);
     }
 }
