@@ -1,13 +1,8 @@
 package com.projetospring.apijava;
 
-import com.projetospring.apijava.domain.Categoria;
-import com.projetospring.apijava.domain.Cidade;
-import com.projetospring.apijava.domain.Estado;
-import com.projetospring.apijava.domain.Produto;
-import com.projetospring.apijava.repository.CategoriaRepository;
-import com.projetospring.apijava.repository.CidadeRepository;
-import com.projetospring.apijava.repository.EstadoRepository;
-import com.projetospring.apijava.repository.ProdutoRepository;
+import com.projetospring.apijava.domain.*;
+import com.projetospring.apijava.domain.enums.TipoCliente;
+import com.projetospring.apijava.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,6 +21,10 @@ public class ApijavaApplication implements CommandLineRunner {
 	private EstadoRepository estadoRepository;
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	@Autowired
+	ClienteRepository clienteRepository;
+	@Autowired
+	EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApijavaApplication.class, args);
@@ -69,5 +68,20 @@ public class ApijavaApplication implements CommandLineRunner {
 
 		estadoRepository.saveAll(Arrays.asList(estado1, estado2));
 		cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
+
+		Cliente cliente1 = new Cliente(null, "Ozzy Osbourne", "ozzy@batman.com", "00000000191",
+				TipoCliente.PESSOAFISICA);
+
+		cliente1.getTelefones().addAll(Arrays.asList("123456789", "999999999"));
+
+		Endereco e1 = new Endereco(null, "Rua das Flores", "300", "Apto 203",
+				"Jardins", "12345678", cliente1, cidade1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "2800", "Casa 27",
+				"Centro", "0000000000", cliente1, cidade2);
+
+		cliente1.getEnderecos().addAll(Arrays.asList(e1, e2));
+
+		clienteRepository.save(cliente1);
+		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 	}
 }
