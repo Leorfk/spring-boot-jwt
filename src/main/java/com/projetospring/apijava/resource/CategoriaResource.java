@@ -4,11 +4,10 @@ import com.projetospring.apijava.domain.Categoria;
 import com.projetospring.apijava.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Objects;
 
 @RestController
@@ -23,5 +22,13 @@ public class CategoriaResource {
         Categoria cat = categoriaService.buscar(id);
         //return cat != null ? ResponseEntity.ok(cat) : ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(cat);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
+        obj = categoriaService.iserir(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("?id={id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 }
