@@ -2,10 +2,13 @@ package com.projetospring.apijava.service;
 
 import com.projetospring.apijava.domain.Categoria;
 import com.projetospring.apijava.repository.CategoriaRepository;
+import com.projetospring.apijava.service.exception.DataIntegrityException;
 import com.projetospring.apijava.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,5 +25,23 @@ public class CategoriaService {
     public Categoria iserir(Categoria categoria){
         categoria.setId(null);
         return categoriaRepository.save(categoria);
+    }
+
+    public void atualizar(Categoria categoria){
+        buscar(categoria.getId());
+        categoriaRepository.save(categoria);
+    }
+
+    public void deletar(Integer id){
+        buscar(id);
+        try {
+            categoriaRepository.deleteById(id);
+        }catch (DataIntegrityViolationException e){
+            throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos");
+        }
+    }
+
+    public List<Categoria> listarTodas(){
+        return categoriaRepository.findAll();
     }
 }
