@@ -1,6 +1,7 @@
 package com.projetospring.apijava.resource;
 
 import com.projetospring.apijava.domain.Categoria;
+import com.projetospring.apijava.dto.CategoriaDTO;
 import com.projetospring.apijava.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/categorias")
@@ -46,8 +48,9 @@ public class CategoriaResource {
     }
 
     @GetMapping(value = "/listar")
-    public ResponseEntity<List<Categoria>> getAll(){
+    public ResponseEntity<List<CategoriaDTO>> getAll(){
         List<Categoria> categorias = categoriaService.listarTodas();
-        return ResponseEntity.ok().body(categorias);
+        List<CategoriaDTO> categoriasDTO = categorias.stream().map(categoria -> new CategoriaDTO(categoria)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(categoriasDTO);
     }
 }
