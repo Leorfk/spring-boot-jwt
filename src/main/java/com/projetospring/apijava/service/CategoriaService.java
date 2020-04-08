@@ -6,7 +6,11 @@ import com.projetospring.apijava.service.exception.DataIntegrityException;
 import com.projetospring.apijava.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -43,5 +47,10 @@ public class CategoriaService {
 
     public List<Categoria> listarTodas(){
         return categoriaRepository.findAll();
+    }
+
+    public Page<Categoria> listarPagina(Integer pagina, Integer linhas, String ordenar, String direcao){
+        PageRequest paginas = PageRequest.of(pagina, linhas, Direction.valueOf(direcao), ordenar);
+        return categoriaRepository.findAll(paginas);
     }
 }
