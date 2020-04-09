@@ -1,11 +1,18 @@
 package com.projetospring.apijava.service;
 
 import com.projetospring.apijava.domain.Cliente;
+import com.projetospring.apijava.dto.ClienteDTO;
 import com.projetospring.apijava.repository.ClienteRepository;
+import com.projetospring.apijava.service.exception.DataIntegrityException;
 import com.projetospring.apijava.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,8 +22,37 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     public Cliente buscar(Integer id){
-        Optional<Cliente> categoria =  clienteRepository.findById(id);
-        return categoria.orElseThrow(() -> new ObjectNotFoundException(
+        Optional<Cliente> cliente =  clienteRepository.findById(id);
+        return cliente.orElseThrow(() -> new ObjectNotFoundException(
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+    }
+
+    public void atualizar(Cliente cliente){
+        Cliente newCliente = buscar(cliente.getId());
+        newCliente.setNome(cliente.getNome());
+        newCliente.setEmail(cliente.getEmail());
+        clienteRepository.save(newCliente);
+    }
+
+    public void deletar(Integer id){
+        buscar(id);
+        try {
+            clienteRepository.deleteById(id);
+        }catch (DataIntegrityViolationException e){
+            throw new DataIntegrityException("Não é possível excluir uma cliente que possui pedidos");
+        }
+    }
+
+    public List<Cliente> listarTodas(){
+        return clienteRepository.findAll();
+    }
+
+    public Page<Cliente> listarPagina(Integer pagina, Integer linhas, String ordenar, String direcao){
+        PageRequest paginas = PageRequest.of(pagina, linhas, Sort.Direction.valueOf(direcao), ordenar);
+        return clienteRepository.findAll(paginas);
+    }
+
+    public Cliente fromDTO(ClienteDTO objDTO){
+        return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);
     }
 }
