@@ -2,13 +2,16 @@ package com.projetospring.apijava.resource;
 
 import com.projetospring.apijava.domain.Cliente;
 import com.projetospring.apijava.dto.ClienteDTO;
+import com.projetospring.apijava.dto.ClienteNewDTO;
 import com.projetospring.apijava.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,8 +25,16 @@ public class ClienteResource {
     @GetMapping
     public ResponseEntity<Cliente> findById(@RequestParam(value="id" ) Integer id){
         Cliente cliente = clienteService.buscar(id);
-        //return cliente != null ? ResponseEntity.ok(cliente) : ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(cliente);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) {
+        Cliente obj = clienteService.fromDTO(objDto);
+        obj = clienteService.inserir(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping
