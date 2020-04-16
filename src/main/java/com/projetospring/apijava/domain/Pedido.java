@@ -91,6 +91,14 @@ public class Pedido implements Serializable {
     public void setItens(Set<ItemPedido> itens) {
         this.itens = itens;
     }
+    // quando criamos um método com a palavra get no inicio dele, o spring consegue 'ler' esse método
+    public double getValorTotal(){
+        Double soma = 0.00;
+        for (ItemPedido itemPedido: itens){
+            soma = soma + itemPedido.getSubTotal();
+        }
+        return soma;
+    }
 
     @Override
     public boolean equals(Object o) {
