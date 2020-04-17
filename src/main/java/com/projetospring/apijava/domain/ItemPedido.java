@@ -74,6 +74,15 @@ public class ItemPedido implements Serializable {
         return (preco -desconto) * quantidade;
     }
 
+    public void setProduto(Produto produto) {
+        id.setProduto(produto);
+    }
+
+    public void setPedido(Pedido pedido) {
+        id.setPedido(pedido);
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

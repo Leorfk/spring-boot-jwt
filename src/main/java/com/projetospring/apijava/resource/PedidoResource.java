@@ -4,10 +4,11 @@ import com.projetospring.apijava.domain.Pedido;
 import com.projetospring.apijava.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/pedidos")
@@ -21,5 +22,13 @@ public class PedidoResource {
         Pedido pedido = pedidoService.buscar(id);
         //return cat != null ? ResponseEntity.ok(cat) : ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(pedido);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj) {
+        obj = pedidoService.insert(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 }
