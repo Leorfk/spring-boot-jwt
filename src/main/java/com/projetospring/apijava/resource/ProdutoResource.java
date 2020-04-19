@@ -44,4 +44,14 @@ public class ProdutoResource {
         Page<ProdutoDTO> listDto = list.map(obj -> new ProdutoDTO(obj));
         return ResponseEntity.ok().body(listDto);
     }
+
+    @GetMapping(value = "query")
+    public ResponseEntity<List<Produto>> findNomeCategoria(
+            @RequestParam(value = "nome", defaultValue = "") String nome,
+            @RequestParam(value = "categorias", defaultValue = "0") String categorias){
+        String nomeDecoded = URL.decodeParam(nome);
+        List<Integer> ids = URL.decodeList(categorias);
+        List<Produto> produtos = produtoService.searchQueryMethod(nomeDecoded, ids);
+        return ResponseEntity.ok().body(produtos);
+    }
 }

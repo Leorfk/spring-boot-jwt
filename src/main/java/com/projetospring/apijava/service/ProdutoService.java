@@ -34,4 +34,8 @@ public class ProdutoService {
         List<Categoria> categorias = categoriaRepository.findAllById(ids);
         return produtoRepository.search(nome, categorias, pageRequest);
     }
+    public List<Produto> searchQueryMethod(String nome, List<Integer> ids){
+        List<Categoria> categorias = categoriaRepository.findAllById(ids);
+        return produtoRepository.findDistinctByNomeContainingAndCategoriasIn(nome, categorias);
+    }
 }
