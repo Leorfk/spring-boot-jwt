@@ -116,4 +116,24 @@ public class Pedido implements Serializable {
     public int hashCode() {
         return Objects.hash(id, instante, pagamento, cliente, endereco);
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Número do pedido: ");
+        sb.append(getId());
+        sb.append(", Instante: ");
+        sb.append(getInstante());
+        sb.append(", Cliente: ");
+        sb.append(getCliente().getNome());
+        sb.append(", Status do Pagamento: ");
+        sb.append(getPagamento().getEstado().getDescricao());
+        sb.append("\nDetalhes:\n");
+        for (ItemPedido ip: getItens()) {
+            sb.append(ip.toString());
+        }
+        sb.append("Valor total: ");
+        sb.append(getValorTotal());
+        return sb.toString();
+    }
 }

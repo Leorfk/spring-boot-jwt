@@ -98,4 +98,18 @@ public class ItemPedido implements Serializable {
     public int hashCode() {
         return Objects.hash(id, desconto, quantidade, preco);
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(getProduto().getNome());
+        sb.append(", Quantidade: ");
+        sb.append(getQuantidade());
+        sb.append(", Preço unitário: ");
+        sb.append(getPreco());
+        sb.append(", Subtotal: ");
+        sb.append(getSubTotal());
+        sb.append("\n");
+        return sb.toString();
+    }
 }
