@@ -1,6 +1,8 @@
 package com.projetospring.apijava.config;
 
 import com.projetospring.apijava.service.DBService;
+import com.projetospring.apijava.service.EmailService;
+import com.projetospring.apijava.service.SmtpEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,5 +27,10 @@ public class DevConfig {
         }
         dbService.instantiateTestDataBase();
         return true;
+    }
+
+    @Bean
+    public EmailService emailService(){
+        return new SmtpEmailService();
     }
 }
