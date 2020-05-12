@@ -15,6 +15,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,6 +25,8 @@ import java.util.Optional;
 @Service
 public class ClienteService {
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private ClienteRepository clienteRepository;
     @Autowired
@@ -69,12 +72,12 @@ public class ClienteService {
     }
 
     public Cliente fromDTO(ClienteDTO objDTO){
-        return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);
+        return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null, null);
     }
 
     public Cliente fromDTO(ClienteNewDTO objDto) {
         Cliente cliente = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfCnpj(),
-                TipoCliente.toEnum(objDto.getTipo()));
+                TipoCliente.toEnum(objDto.getTipo()), passwordEncoder.encode(objDto.getSenha()));
 
         Cidade cidade = new Cidade(objDto.getCidadeId(), null, null);
         Endereco endereco = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(),
