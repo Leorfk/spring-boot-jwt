@@ -13,7 +13,7 @@ public class ApijavaApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(ApijavaApplication.class, args);
 		System.out.println("\nWelcome " +
-				"\n  _____" +
+				"\n  /\\_/\\" +
 				"\n  |0V0|" +
 				"\n /| O |\\" +
 				"\n  |_|_|");

@@ -38,6 +38,10 @@ public class ClienteService {
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
     }
 
+    public Cliente buscarPorEmail(String email){
+        return clienteRepository.findByEmail(email);
+    }
+
     @Transactional
     public Cliente inserir(Cliente obj) {
         obj.setId(null);
