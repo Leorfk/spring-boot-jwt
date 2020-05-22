@@ -100,15 +100,21 @@ public class DBService {
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-        Cliente cliente1 = new Cliente(null, "Leonardo", "kirkhleonardo@gmail.com", "40424577895", TipoCliente.PESSOAFISICA, passwordEncoder.encode("12345678"));
+        Cliente cliente1 = new Cliente(null, "Leonardo", "kirkhleonardo@gmail.com", "40424577895",
+                TipoCliente.PESSOAFISICA, passwordEncoder.encode("12345678"));
         cliente1.getTelefones().addAll(Arrays.asList("12345678", "9876543"));
-        Cliente cliente2 = new Cliente(null, "Test", "email@gmail.com", "36378912377", TipoCliente.PESSOAFISICA, passwordEncoder.encode("12345678"));
+
+        Cliente cliente2 = new Cliente(null, "Test", "email@gmail.com", "36378912377",
+                TipoCliente.PESSOAFISICA, passwordEncoder.encode("12345678"));
         cliente2.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
         cliente2.addPerfil(Perfil.ADMIN);
 
-        Endereco endereco1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cliente1, c1);
-        Endereco endereco2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cliente1, c2);
-        Endereco endereco3 = new Endereco(null, "Avenida 47", "47", "Sala 47", "Centro", "38777012", cliente2, c2);
+        Endereco endereco1 = new Endereco(null, "Rua Flores", "300", "Apto 303",
+                "Jardim", "38220834", cliente1, c1);
+        Endereco endereco2 = new Endereco(null, "Avenida Matos", "105", "Sala 800",
+                "Centro", "38777012", cliente1, c2);
+        Endereco endereco3 = new Endereco(null, "Avenida 47", "47", "Sala 47",
+                "Centro", "38777012", cliente2, c2);
 
         cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
         cliente1.getEnderecos().addAll(Arrays.asList(endereco3));
@@ -124,7 +130,8 @@ public class DBService {
         Pagamento pagamento1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, pedido1, 6);
         pedido1.setPagamento(pagamento1);
 
-        Pagamento pagamento2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, pedido2, sdf.parse("20/10/2017 00:00"), null);
+        Pagamento pagamento2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, pedido2,
+                sdf.parse("20/10/2017 00:00"), null);
         pedido2.setPagamento(pagamento2);
 
         cliente1.getPedidos().addAll(Arrays.asList(pedido1, pedido2));
