@@ -7,6 +7,7 @@ import com.projetospring.apijava.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -45,12 +46,14 @@ public class ClienteResource {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
     @DeleteMapping
     public ResponseEntity<Void> delete(@RequestParam Integer id){
         clienteService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
     @GetMapping(value = "/listar")
     public ResponseEntity<List<ClienteDTO>> getAll(){
         List<Cliente> clientes = clienteService.listarTodas();
