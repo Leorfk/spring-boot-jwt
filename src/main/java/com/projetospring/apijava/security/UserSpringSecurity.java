@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class UserSpringSecurity implements UserDetails, Serializable {
+public class UserSpringSecurity implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
@@ -22,6 +22,7 @@ public class UserSpringSecurity implements UserDetails, Serializable {
     }
 
     public UserSpringSecurity(Integer id, String email, String senha, Set<Perfil> perfis) {
+        this.id = id;
         this.email = email;
         this.senha = senha;
         this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescricao()))
@@ -64,5 +65,9 @@ public class UserSpringSecurity implements UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+    //verifica se o usuário possui o perfil
+    public boolean hasRole(Perfil perfil) {
+        return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
     }
 }
