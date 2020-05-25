@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/pedidos")
@@ -30,5 +31,12 @@ public class PedidoResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping(value = "por-cliente")
+    public ResponseEntity<List<Pedido>> getPedidos(){
+        List<Pedido> pedidos = pedidoService.buscarPedidosPorCliente();
+        return ResponseEntity.ok().body(pedidos);
+
     }
 }
